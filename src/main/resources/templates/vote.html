@@ -2,98 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
     <title>投票</title>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" href="https://unpkg.com/lu2/theme/edge/css/common/ui.css">
+    <link rel="stylesheet" href="/css/sheet.css">
+    <script type="module" src="https://unpkg.com/lu2/theme/edge/js/common/all.js"></script>
+
     <style>
-        body {
-            background-image: url("/image/background.png");
-            background-size: 100% 100%;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: center;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -10;
-            zoom: 1;
-        }
-
-        main {
-            margin: 0 auto;
-            width: 80%;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
         .nominee {
-            background-color: #eee;
-            margin: 20px;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
+            margin-top: 30px;
         }
 
-        h2 {
-            margin: 0;
-            margin-bottom: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        img {
+        .nominee-pic {
             width: 100%;
-            height: 300px;
-            object-fit: cover;
-            margin-bottom: 20px;
-        }
-
-        p {
-            margin-bottom: 10px;
-            color: #666;
-        }
-
-        button {
-            background-color: #30a7d7;
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #2690bf;
-        }
-
-        #searchBox {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
+            border-radius: 10px;
         }
     </style>
 
 </head>
 <body>
 
-<main>
-    <input type="text" id="searchBox" placeholder="搜索..." onkeyup="searchFunction()">
+<main class="sheet">
+    <h1 class="title">投票</h1>
 
-    <div id="nomineeContainer">
-        <div th:each="nominee : ${nominees}" class="nominee" th:attr="data-name=${nominee.name}">
-            <h2 th:text="${nominee.name}" class="nomineeName"></h2>
-            <img th:src="${nominee.picPath()}" alt="Nominee Picture">
-            <p th:text="${nominee.intro}"></p>
-            <p th:text="${nominee.reason}"></p>
-            <p>票数：<span th:text="${nominee.votes}" class="votes"></span></p>
-            <button onclick="voteForNominee(this)" th:attr="data-id=${nominee.id}">Vote</button>
-        </div>
+    <span class="ui-input ui-input-search" align="end">
+        <input id="searchBox" onkeyup="searchFunction()" type="search" placeholder="搜索">
+        <button class="ui-icon-search">搜索</button>
+    </span>
+
+    <div th:each="nominee : ${nominees}" class="nominee card" th:attr="data-name=${nominee.name}">
+        <h2 th:text="${nominee.name}" class="nomineeName"></h2>
+        <img class="nominee-pic" th:src="${nominee.picPath()}" alt="Nominee Picture">
+        <p th:text="${nominee.intro}"></p>
+        <p th:text="${nominee.reason}"></p>
+        <p>票数：<span th:text="${nominee.votes}" class="votes"></span></p>
+        <button class="ui-button" onclick="voteForNominee(this)" th:attr="data-id=${nominee.id}">投票</button>
     </div>
 </main>
 
+<ui-lighttip id="info"></ui-lighttip>
 
 <script>
     function searchFunction() {
@@ -118,7 +64,9 @@
             var votesSpan = button.previousElementSibling.children[0];
             votesSpan.textContent = parseInt(votesSpan.textContent) + 1;
         }
-        alert(result);
+        let tip = document.getElementById('info');
+        tip.innerText = result;
+        tip.open = true;
     }
 </script>
 </body>
