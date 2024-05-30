@@ -15,6 +15,7 @@ public class Nominee {
     private String contact;
     private String pic;
     private NominationState state;
+    private String rejectReason;
     private String intro;
     private String reason;
 
@@ -92,6 +93,14 @@ public class Nominee {
 
     public void setIntro(String intro) {
         this.intro = intro;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
     }
 
     public String getReason() {

@@ -55,6 +55,7 @@
 
         <button th:value="${nominee.id}" onclick="approveNominee(this)" type="success" is="ui-button">批准</button>
         <button th:value="${nominee.id}" onclick="rejectNominee(this)" type="danger" is="ui-button">拒绝</button>
+        <input type="text" th:id="${nominee.id}" name="name" placeholder="拒绝理由" is="ui-input">
     </div>
 
     <script>
@@ -67,7 +68,9 @@
 
         async function rejectNominee(button) {
             let id = button.getAttribute('value');
-            let response = await fetch(`/api/admin/nominee?approve=false&id=${id}`);
+            let input = document.getElementById(id);
+            let reason = input.value;
+            let response = await fetch(`/api/admin/nominee?approve=false&id=${id}&reason=${reason}`);
             let message = await response.text();
             alert(message);
         }

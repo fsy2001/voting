@@ -51,7 +51,8 @@ public class AdminController {
     public String adminSetNominee(HttpServletRequest request,
                                   HttpServletResponse response,
                                   @RequestParam(value = "approve") Boolean approve,
-                                  @RequestParam(value = "id") Integer nomineeId) {
+                                  @RequestParam(value = "id") Integer nomineeId,
+                                  @RequestParam(value = "reason", required = false) String reason) {
         var session = request.getSession();
         var user = (User) session.getAttribute("user");
 
@@ -78,6 +79,7 @@ public class AdminController {
             nominee.setState(NominationState.APPROVED);
         } else {
             nominee.setState(NominationState.REJECTED);
+            nominee.setRejectReason(reason);
         }
 
         nomineeRepository.save(nominee);

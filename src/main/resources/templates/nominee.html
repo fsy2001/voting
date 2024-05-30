@@ -89,7 +89,11 @@
                 </div>
             </div>
 
-            <span>状态：<span th:text="${nominee.state.getStatusName()}"></span></span>
+            <span>
+                状态：
+                <span th:text="${nominee.state.getStatusName()}"></span>
+                <span th:text="${nominee.rejectReason}"></span>
+            </span>
         </div>
     </main>
 </body>
