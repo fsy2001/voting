@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>我的提名</title>
+    <style>
+        body {
+            background-image: url("/image/background.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            zoom: 1;
+            font-family: sans-serif;
+        }
+
+        main {
+            margin: 0 auto;
+            width: 80%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h1 span {
+            color: #ff0000;
+        }
+
+        #nomineeContainer {
+            margin: 0 auto;
+            width: 80%;
+            padding: 20px;
+        }
+
+        .nominee {
+            background-color: #eeeeee;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .user-info img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .user-text div {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<main id="nomineeContainer">
+    <div class="user-info">
+        <img src="/image/avatar.png" alt="">
+        <div class="user-text">
+            <div th:text="${user.userId}"></div>
+            <div th:text="${user.username}"></div>
+        </div>
+    </div>
+
+    <div th:each="nominee : ${nominees}" class="nominee">
+        <h2 th:text="${nominee.name}" class="nomineeName"></h2>
+        <img th:src="${nominee.picPath()}" alt="Nominee Picture">
+        <p th:text="${nominee.intro}"></p>
+        <p>ID: <span th:text="${nominee.id}"></span></p>
+        <p>状态：<span th:text="${nominee.state.getStatusName()}"></span></p>
+    </div>
+</main>
+</body>
+</html>

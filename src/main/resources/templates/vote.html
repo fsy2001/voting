@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <title>投票</title>
+    <style>
+        body {
+            background-image: url("/image/background.png");
+            background-size: 100% 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            zoom: 1;
+        }
+
+        main {
+            margin: 0 auto;
+            width: 80%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nominee {
+            background-color: #eee;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        }
+
+        h2 {
+            margin: 0;
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        button {
+            background-color: #30a7d7;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2690bf;
+        }
+
+        #searchBox {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+<main>
+    <input type="text" id="searchBox" placeholder="搜索..." onkeyup="searchFunction()">
+
+    <div id="nomineeContainer">
+        <div th:each="nominee : ${nominees}" class="nominee" th:attr="data-name=${nominee.name}">
+            <h2 th:text="${nominee.name}" class="nomineeName"></h2>
+            <img th:src="${nominee.picPath()}" alt="Nominee Picture">
+            <p th:text="${nominee.intro}"></p>
+            <p th:text="${nominee.reason}"></p>
+            <p>票数：<span th:text="${nominee.votes}" class="votes"></span></p>
+            <button onclick="voteForNominee(this)" th:attr="data-id=${nominee.id}">Vote</button>
+        </div>
+    </div>
+</main>
+
+
+<script>
+    function searchFunction() {
+        var searchBox = document.getElementById('searchBox');
+        var searchWord = searchBox.value;
+        var nominees = document.getElementsByClassName('nominee');
+        for (var i = 0; i < nominees.length; i++) {
+            var nomineeName = nominees[i].getAttribute('data-name');
+            if (nomineeName.includes(searchWord) || searchWord === '') {
+                nominees[i].style.display = 'block';
+            } else {
+                nominees[i].style.display = 'none';
+            }
+        }
+    }
+
+    async function voteForNominee(button) {
+        var id = button.getAttribute('data-id');
+        var response = await fetch('/api/vote?nominee=' + id);
+        var result = await response.text();
+        if (response.ok) {
+            var votesSpan = button.previousElementSibling.children[0];
+            votesSpan.textContent = parseInt(votesSpan.textContent) + 1;
+        }
+        alert(result);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>我要提名</title>
+    <style>
+        body {
+            background-image: url("/image/background.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            zoom: 1;
+        }
+
+        form {
+            margin: 50px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px -5px rgba(0, 0, 0, 0.75);
+        }
+
+        input[type=text],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .radio-button {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: #FF4757;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .counter {
+            color: #333;
+            font-size: 0.8em;
+            text-align: right;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            resize: none;
+        }
+    </style>
+</head>
+
+<body>
+<form id="nomineeForm" enctype="multipart/form-data">
+    <label for="type">类型:</label>
+    <div class="radio-button">
+        <div>
+            <label for="self">自荐</label>
+            <input type="radio" id="self" name="type" value="SELF">
+        </div>
+        <div>
+            <label for="other">推荐</label>
+            <input type="radio" id="other" name="type" value="OTHER">
+        </div>
+    </div>
+    <label for="name">被提名人:</label>
+    <input type="text" id="name" name="name" placeholder="团体/个人的名称">
+    <label for="reason">提名理由:</label>
+    <textarea id="reason" name="reason" maxlength="100" placeholder="100字以内"></textarea>
+    <div id="reason-counter" class="counter">0/100</div>
+    <label class="file-label" for="pic">被提名人照片:</label>
+    <input style="display: none" type="file" id="pic" name="pic" placeholder="请上传大小在5MB以内的照片">
+    <label for="intro">被提名人信息:</label>
+    <textarea id="intro" name="intro" maxlength="50" placeholder="50字以内"></textarea>
+    <div id="intro-counter" class="counter">0/50</div>
+    <label for="contact">被提名人联系方式:</label>
+    <input type="text" id="contact" name="contact" placeholder="联系方式仅为工作组收集信息、不会在投票页面展示">
+    <button type="button" onclick="submitForm()">提交</button>
+</form>
+
+<script>
+    document.getElementById('pic').onchange = function () {
+        document.getElementById('pic').previousElementSibling.innerText = this.files[0].name;
+    }
+
+    function updateCounter(id, maxlength) {
+        let textarea = document.getElementById(id);
+        let counter = document.getElementById(id + '-counter');
+        counter.textContent = textarea.value.length + '/' + maxlength;
+    }
+
+    document.getElementById('reason').oninput = function () {
+        updateCounter('reason', 100);
+    }
+
+    document.getElementById('intro').oninput = function () {
+        updateCounter('intro', 50);
+    }
+
+    async function submitForm() {
+        let form = document.getElementById('nomineeForm');
+        let formData = new FormData(form);
+
+        if (!formData.get('name') || !formData.get('reason') || !formData.get('pic') || !formData.get('intro') || !formData.get('contact')) {
+            alert('所有项都必须填写');
+            return;
+        }
+
+        let response = await fetch('/api/recommend', {
+            method: 'POST',
+            body: formData
+        });
+
+        let message = await response.text();
+        alert(message);
+        if (response.ok) {
+            window.location.href = "/nominee";
+        }
+    }
+</script>
+
+</body>
+
+</html>
