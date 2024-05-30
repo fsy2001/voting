@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <title>修改票数</title>
+    <link rel="stylesheet" href="https://unpkg.com/lu2/theme/edge/css/common/ui.css">
+    <link rel="stylesheet" href="/css/sheet.css">
+    <script type="module" src="https://unpkg.com/lu2/theme/edge/js/common/all.js"></script>
+    <style>
+        .card {
+            padding-top: 30px;
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<main class="sheet">
+    <h1 class="title">修改票数</h1>
+
+    <form action="/api/admin/adjust" method="get">
+        <label for="nomineeId">候选人ID：</label><br>
+        <input type="text" id="nomineeId" name="nomineeId"><br>
+        <label for="newVote">新票数：</label><br>
+        <input type="text" id="newVote" name="newVote"><br>
+        <button is="ui-button" type="submit">提交</button>
+    </form>
+
+</main>
+</body>
+</html>

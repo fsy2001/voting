@@ -39,6 +39,7 @@ public class IdentificationService {
         user.setUserId(userId);
         user.setUsername(username);
         user.setLeftvotes(10);
+        user.setAdmin(false);
         user = userRepository.save(user);
         return user;
     }

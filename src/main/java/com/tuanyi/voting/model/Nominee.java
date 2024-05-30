@@ -101,4 +101,12 @@ public class Nominee {
     public void setReason(String reason) {
         this.reason = reason;
     }
+
+    public String approveFuntion() {
+        return "approveNominee('" + this.id + "')";
+    }
+
+    public String rejectFuntion() {
+        return "rejectNominee('" + this.id + "')";
+    }
 }

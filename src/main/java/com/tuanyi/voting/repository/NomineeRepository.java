@@ -10,4 +10,5 @@ public interface NomineeRepository extends JpaRepository<Nominee, Integer> {
     Nominee getNomineeById(Integer id);
     List<Nominee> getNomineeByStateOrderByVotesDesc(NominationState state);
     List<Nominee> getNomineeByUserId(String userId);
+    List<Nominee> findAllByOrderByIdDesc();
 }

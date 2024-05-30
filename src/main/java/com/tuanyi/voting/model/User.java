@@ -14,6 +14,7 @@ public class User {
     private String username;
     private Integer leftvotes;
     private Date lastVote;
+    private Boolean isAdmin;
 
     public Integer getId() {
         return id;
@@ -53,5 +54,14 @@ public class User {
 
     public void setLastVote(Date lastVote) {
         this.lastVote = lastVote;
+    }
+
+
+    public void setAdmin(Boolean admin) {
+        this.isAdmin = admin;
+    }
+
+    public Boolean isAdmin() {
+        return this.isAdmin;
     }
 }
