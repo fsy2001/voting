@@ -44,7 +44,7 @@ public class ImageService {
         if (resource.exists() || resource.isReadable()) {
             return resource;
         } else {
-            throw new RuntimeException("Could not read the file!");
+            throw new RuntimeException("Could not read the file " + imageName);
         }
     }
 }

@@ -92,6 +92,11 @@ public class NomineeController {
             return "图片大小超过5MB";
         }
 
+        if (pic.getContentType() == null || !pic.getContentType().startsWith("image/")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return "不支持的图片格式";
+        }
+
         String picName;
         try {
             picName = imageService.saveImage(pic);
