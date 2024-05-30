@@ -51,6 +51,8 @@
     </style>
 </head>
 <body>
+<ui-lighttip id="recommend-info">推荐他人需要征得对方同意</ui-lighttip>
+
 <form id="nomineeForm" enctype="multipart/form-data" class="sheet" is="ui-form" is-validate>
     <h1 class="title">我要提名</h1>
 
@@ -70,8 +72,8 @@
         <label>类型：</label>
         <input type="radio" id="self" name="type" is="ui-radio" value="SELF">
         <label for="self">自荐</label>
-        <input type="radio" id="other" name="type" is="ui-radio" value="OTHER">
-        <label for="other">推荐</label>
+        <input type="radio" id="other" name="type" is="ui-radio" value="OTHER" onclick="showRecommendAlert()">
+        <label for="other">推荐他人</label>
     </div>
 
     <div class="form-row">
@@ -148,6 +150,11 @@
         if (response.ok) {
             window.location.href = "/nominee";
         }
+    }
+
+    function showRecommendAlert() {
+        let tip = document.getElementById('recommend-info');
+        tip.show();
     }
 </script>
 </body>
