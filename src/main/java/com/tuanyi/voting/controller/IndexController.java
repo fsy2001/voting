@@ -21,6 +21,10 @@ public class IndexController {
 
     @GetMapping("/uis")
     public String uis(HttpServletRequest request, @RequestParam(value = "code", required = false) String code) {
+        if (code == null) {
+            return "redirect:https://tac.fudan.edu.cn/oauth2/authorize.act?client_id=fcd2af24-560c-45d4-ba6d-8f01aa8270f6&response_type=code&scope=basic%20mobile&state=weGo123&redirect_uri=https://tuanyi.fudan.edu.cn/uis";
+        }
+
         try {
             var user = identificationService.getUserByCode(code);
             request.getSession().setAttribute("user", user);
