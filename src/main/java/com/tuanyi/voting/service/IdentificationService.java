@@ -36,10 +36,10 @@ public class IdentificationService {
         }
 
         var user = new User();
-        user.setUserId(userId);
-        user.setUsername(username);
-        user.setLeftvotes(10);
-        user.setAdmin(false);
+        user.userId = userId;
+        user.username = username;
+        user.leftVotes = 10;
+        user.isAdmin = false;
         user = userRepository.save(user);
         return user;
     }

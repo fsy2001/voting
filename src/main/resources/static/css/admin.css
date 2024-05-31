@@ -1,0 +1,21 @@
+#approve-nominee-table {
+    margin-top: 30px;
+    overflow-x: scroll;
+}
+
+.nominee-long-text {
+    max-width: 150px;
+}
+
+.nominee-menu {
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 150px;
+}
+
+.nominee-action-button {
+    width: 130px;
+    margin: 5px;
+}

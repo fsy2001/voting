@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <title>管理后台</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="/js/admin.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/lu2/theme/edge/css/common/ui.css">
+    <script type="module" src="https://unpkg.com/lu2/theme/edge/js/common/all.js"></script>
+</head>
+<body>
+
+<main id="tabs" class="ui-tab-tabs">
+    <button data-target="approve-nominee" name="tab-button" class="ui-tab-tab" is-tab open>审核候选人</button>
+    <button data-target="create-admin" name="tab-button" class="ui-tab-tab" is-tab>添加管理员</button>
+</main>
+
+<section id="approve-nominee" class="ui-tab-content active">
+    <table id="approve-nominee-table" class="ui-table">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>图片</th>
+            <th>介绍</th>
+            <th>推荐理由</th>
+            <th>类别</th>
+            <th>提名人</th>
+            <th>联系方式</th>
+            <th>票数</th>
+            <th>审核状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="nominee : ${nominees}">
+            <td th:text="${nominee.name}">
+            </td>
+            <td>
+                <a th:href="@{'/images/' + ${nominee.pic}}">显示</a>
+            </td>
+
+            <td th:text="${nominee.intro}" class="nominee-long-text"></td>
+            <td th:text="${nominee.reason}" class="nominee-long-text"></td>
+            <td>
+                <span th:if="${nominee.type.name() == 'SELF'}">自荐</span>
+                <span th:if="${nominee.type.name() == 'OTHER'}">推荐</span>
+            </td>
+            <td th:text="${nominee.userId}"></td>
+            <td th:text="${nominee.contact}" class="nominee-long-text"></td>
+            <td th:text="${nominee.votes}"></td>
+            <td class="nominee-long-text">
+                <span th:if="${nominee.state.name() == 'DRAFT'}">草稿</span>
+                <span th:if="${nominee.state.name() == 'PENDING'}">审核中</span>
+                <span th:if="${nominee.state.name() == 'APPROVED'}">已批准</span>
+                <span th:if="${nominee.state.name() == 'REJECTED'}">
+                    已拒绝
+                    <br>
+                    理由：<span th:text="${nominee.rejectReason}"></span>
+                </span>
+            </td>
+            <td>
+                <ui-drop th:target="@{'actions' + ${nominee.id}}">
+                    <a href="javascript:">操作</a>
+                </ui-drop>
+            </td>
+
+            <div th:id="@{'actions' + ${nominee.id}}" class="ui-drop-target nominee-menu" hidden>
+                <button th:value="${nominee.id}" data-type="success" class="ui-button nominee-action-button"
+                        onclick="clickApproveButton(this)">批准候选人
+                </button>
+                <button th:value="${nominee.id}" data-type="danger" class="ui-button nominee-action-button"
+                        onclick="clickRejectButton(this)">拒绝候选人
+                </button>
+                <button th:value="${nominee.id}" data-type="warning" class="ui-button nominee-action-button"
+                        onclick="clickChangeVoteButton(this)">修改票数
+                </button>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+
+    <dialog id="reject-dialog" is="ui-dialog">
+        <h4 class="ui-dialog-title">
+            拒绝候选人
+        </h4>
+        <form class="ui-dialog-body">
+            <label for="reject-reason">拒绝理由：</label>
+            <input id="reject-reason" type="text" class="ui-input">
+        </form>
+
+        <div class="ui-dialog-footer">
+            <button data-type="danger" class="ui-button" onclick="rejectNominee()">提交</button>
+        </div>
+    </dialog>
+
+    <dialog id="change-vote-dialog" is="ui-dialog" style="background-color: white;">
+        <h4 class="ui-dialog-title">
+            修改票数
+        </h4>
+        <form class="ui-dialog-body">
+            <label for="change-vote">新票数：</label>
+            <input id="change-vote" type="text" class="ui-input">
+        </form>
+
+        <div class="ui-dialog-footer">
+            <button type="button" data-type="warning" class="ui-button" onclick="changeVote()">提交</button>
+        </div>
+    </dialog>
+</section>
+
+<section id="create-admin" class="ui-tab-content">
+    <h1>添加管理员</h1>
+
+    <form>
+        <label for="create-admin-input">管理员：</label>
+        <input type="text" id="create-admin-input" class="ui-input" placeholder="输入学号">
+        <button data-type="normal" is="ui-button" onclick="createAdmin()">提交</button>
+    </form>
+</section>
+</body>
+</html>

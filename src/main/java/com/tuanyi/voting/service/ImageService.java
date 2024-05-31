@@ -19,21 +19,15 @@ public class ImageService {
     private String directory;
 
     public String saveImage(MultipartFile image) throws IOException {
-        // Generate a random filename
         String filename = UUID.randomUUID().toString();
 
-        // Get the extension of the original file
         String extension = Objects.requireNonNull(image.getOriginalFilename()).substring(image.getOriginalFilename().lastIndexOf("."));
 
-        // Concatenate the directory, filename, and extension
-        // Specify your directory path here
         String finalPath = directory + filename + extension;
 
-        // Create a Path instance
         Path path = Paths.get(finalPath);
         Files.copy(image.getInputStream(), path);
 
-        // Return the filename
         return filename + extension;
     }
 
@@ -44,7 +38,7 @@ public class ImageService {
         if (resource.exists() || resource.isReadable()) {
             return resource;
         } else {
-            throw new RuntimeException("Could not read the file " + imageName);
+            throw new IOException("Could not read file: " + imageName);
         }
     }
 }
