@@ -87,7 +87,7 @@ public class VoteController {
         vote.userId = user.userId;
         vote.nomineeId = nominee.id;
         vote.voteTime = new Date();
-        vote.ip = request.getRemoteAddr();
+        vote.ip = request.getHeader("X-Real-IP");
         voteRepository.save(vote);
 
         nominee.votes += 1;

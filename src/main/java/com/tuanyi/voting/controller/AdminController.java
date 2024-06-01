@@ -23,7 +23,7 @@ public class AdminController {
 
     @GetMapping("/admin")
     public ModelAndView home() {
-        var modelAndView = new ModelAndView("/admin/admin-home");
+        var modelAndView = new ModelAndView("admin-home");
         var allNominees = nomineeRepository.findAllByOrderByIdDesc();
         modelAndView.addObject("nominees", allNominees);
         return modelAndView;
