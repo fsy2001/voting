@@ -2,7 +2,7 @@ package com.tuanyi.voting.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vote")
@@ -13,5 +13,5 @@ public class Vote {
     public String userId;
     public String ip;
     public Integer nomineeId;
-    public Date voteTime;
+    public LocalDateTime voteTime;
 }

@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Controller
 public class VoteController {
@@ -51,18 +50,16 @@ public class VoteController {
             return "候选人不存在";
         }
 
-        var user = userRepository.findByUserId(userId); // get the latest item
+        var user = userRepository.findByUserId(userId);
+        var lastVote = user.lastVote;
+        var now = LocalDateTime.now();
+        var today = now.toLocalDate();
 
-        // Check if the user's last vote was not today
-        if (user.lastVote != null) {
-            Calendar cal1 = Calendar.getInstance();
-            Calendar cal2 = Calendar.getInstance();
-            cal1.setTime(user.lastVote);
-            cal2.setTime(new Date());
-            boolean sameDay = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-                    cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+        // refresh left vote count on a new day
+        if (lastVote != null) {
+            var lastVoteDate = lastVote.toLocalDate();
+            var sameDay = lastVoteDate.equals(today);
             if (!sameDay) {
-                // If the user's last vote was not today, refresh the user's remaining votes to 10
                 user.leftVotes = 10;
             }
         }
@@ -72,21 +69,26 @@ public class VoteController {
             return "投票次数已用完";
         }
 
-        int votesToday = voteRepository.countVotesByUserForNomineeOnDate(user.userId, nominee.id, new Date());
-        if (votesToday >= 3) {
+        var allVotes = voteRepository.findAllByUserIdAndNomineeId(user.userId, nominee.id);
+        var voteCount = allVotes
+                .stream()
+                .filter(vote -> vote.voteTime.toLocalDate().equals(today))
+                .count();
+
+        if (voteCount >= 3) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "同一候选人每天只能投三票";
         }
 
         user.leftVotes -= 1;
-        user.lastVote = new Date();
+        user.lastVote = LocalDateTime.now();
 
         user = userRepository.save(user);
 
-        Vote vote = new Vote();
+        var vote = new Vote();
         vote.userId = user.userId;
         vote.nomineeId = nominee.id;
-        vote.voteTime = new Date();
+        vote.voteTime = now;
         vote.ip = request.getHeader("X-Real-IP");
         voteRepository.save(vote);
 

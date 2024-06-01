@@ -2,7 +2,7 @@ package com.tuanyi.voting.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user")
@@ -13,6 +13,6 @@ public class User {
     public String userId;
     public String username;
     public Integer leftVotes;
-    public Date lastVote;
+    public LocalDateTime lastVote;
     public Boolean isAdmin;
 }
