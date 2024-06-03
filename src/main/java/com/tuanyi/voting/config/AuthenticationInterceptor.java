@@ -42,7 +42,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     private void handleUnauthorized(String uri, HttpServletResponse response) throws Exception {
         if (uri.startsWith("/api")) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "尚未登录");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setCharacterEncoding("utf-8");
+            var writer = response.getWriter();
+            writer.println("尚未登录");
+            writer.flush();
         } else {
             response.sendRedirect("/uis");
         }
@@ -50,7 +54,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     private void handleForbidden(String uri, HttpServletResponse response) throws Exception {
         if (uri.startsWith("/api")) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "没有权限");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setCharacterEncoding("utf-8");
+            var writer = response.getWriter();
+            writer.println("没有权限");
+            writer.flush();
         } else {
             response.sendRedirect("/");
         }
