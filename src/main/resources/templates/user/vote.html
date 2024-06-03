@@ -29,6 +29,7 @@
     <h1 class="title">投票</h1>
 
     <span class="ui-input ui-input-search" align="end">
+        <label for="searchBox"></label>
         <input id="searchBox" onkeyup="searchFunction()" type="search" placeholder="搜索">
         <button class="ui-icon-search">搜索</button>
     </span>
@@ -43,34 +44,48 @@
     </div>
 </main>
 
-<ui-lighttip id="info"></ui-lighttip>
+<ui-lighttip id="success"></ui-lighttip>
+<ui-lighttip id="failed" type="error">
+    <p>
+        <span id="failed-reason"></span>
+        <br>
+        <img src='/image/ad.png' alt='广告'>
+        <br>
+        扫码抽取9.9-999元京东红包
+    </p>
+</ui-lighttip>
 
 <script>
     function searchFunction() {
-        var searchBox = document.getElementById('searchBox');
-        var searchWord = searchBox.value;
-        var nominees = document.getElementsByClassName('nominee');
-        for (var i = 0; i < nominees.length; i++) {
-            var nomineeName = nominees[i].getAttribute('data-name');
+        let searchBox = document.getElementById('searchBox')
+        let searchWord = searchBox.value
+        let nominees = document.getElementsByClassName('nominee')
+        for (let i = 0; i < nominees.length; i++) {
+            let nomineeName = nominees[i].getAttribute('data-name')
             if (nomineeName.includes(searchWord) || searchWord === '') {
-                nominees[i].style.display = 'block';
+                nominees[i].style.display = 'block'
             } else {
-                nominees[i].style.display = 'none';
+                nominees[i].style.display = 'none'
             }
         }
     }
 
     async function voteForNominee(button) {
-        var id = button.getAttribute('data-id');
-        var response = await fetch('/api/vote?nominee=' + id);
-        var result = await response.text();
+        let id = button.getAttribute('data-id')
+        let response = await fetch(`/api/vote?nominee=${id}`)
+        let result = await response.text()
         if (response.ok) {
-            var votesSpan = button.previousElementSibling.children[0];
-            votesSpan.textContent = parseInt(votesSpan.textContent) + 1;
+            let successTip = document.getElementById('success')
+            successTip.innerText = result
+            successTip.open = true
+            let votesSpan = button.previousElementSibling.children[0]
+            votesSpan.textContent = String(parseInt(votesSpan.textContent) + 1)
+        } else {
+            let failedTip = document.getElementById('failed')
+            let failedReason = document.getElementById('failed-reason')
+            failedReason.innerText = result
+            failedTip.open = true
         }
-        let tip = document.getElementById('info');
-        tip.innerText = result;
-        tip.open = true;
     }
 </script>
 </body>
