@@ -5,10 +5,17 @@
     <title>投票信息</title>
     <script src="https://cdn.staticfile.net/Chart.js/3.9.1/chart.js" defer></script>
     <script src="/js/chart.js" defer></script>
+    <link rel="stylesheet" href="https://unpkg.com/lu2/theme/edge/css/common/ui.css">
+    <script type="module" src="https://unpkg.com/lu2/theme/edge/js/common/all.js"></script>
     <style>
         #chart {
             max-width: 700px;
             max-height: 700px;
+        }
+
+        #vote-record-table {
+            margin-top: 30px;
+            overflow-x: scroll;
         }
     </style>
 </head>
@@ -21,6 +28,23 @@
 
     <canvas id="chart" th:value="${nominee.id}">
     </canvas>
+
+    <table id="vote-record-table" class="ui-table">
+        <thead>
+        <tr>
+            <th>投票人</th>
+            <th>投票时间</th>
+            <th>IP地址</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vote : ${votes}">
+            <td th:text="${vote.userId}"></td>
+            <td th:text="${vote.voteTime}"></td>
+            <td th:text="${vote.ip}"></td>
+        </tr>
+        </tbody>
+    </table>
 </main>
 </body>
 </html>
