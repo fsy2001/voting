@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <title>我要提名</title>
     <meta name="viewport" content="width=device-width"/>
@@ -96,27 +96,13 @@
     </div>
 
     <div class="form-row submit-row">
-        <button onclick="submitForm()" type="primary" is="ui-button">提交</button>
+        <button onclick="submitForm()" type="button" is="ui-button" data-type="primary">提交</button>
     </div>
 </form>
 
 <script>
     document.getElementById('pic').onchange = function () {
-        document.getElementById('pic').previousElementSibling.innerText = this.files[0].name;
-    }
-
-    function updateCounter(id, maxlength) {
-        let textarea = document.getElementById(id);
-        let counter = document.getElementById(id + '-counter');
-        counter.textContent = textarea.value.length + '/' + maxlength;
-    }
-
-    document.getElementById('reason').oninput = function () {
-        updateCounter('reason', 100);
-    }
-
-    document.getElementById('intro').oninput = function () {
-        updateCounter('intro', 50);
+        document.getElementById('pic').previousElementSibling.innerText = this.files[0].name
     }
 
     async function submitForm() {

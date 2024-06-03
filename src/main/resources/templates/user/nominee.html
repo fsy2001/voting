@@ -80,7 +80,7 @@
 
         <div th:each="nominee : ${nominees}" class="nomination-card card">
             <div class="nomination-card-top">
-                <img class="nomination-card-image" th:src="${nominee.picPath()}" alt="">
+                <img class="nomination-card-image" th:src="@{'/images/' + ${nominee.pic}}" alt="">
                 <div class="nomination-card-text">
                     <h2><span th:text="${nominee.name}"></span> <span class="nominee-id"># <span
                             th:text="${nominee.id}"></span></span></h2>

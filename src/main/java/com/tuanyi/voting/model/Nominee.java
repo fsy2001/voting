@@ -18,8 +18,4 @@ public class Nominee {
     public String rejectReason;
     public String intro;
     public String reason;
-
-    public String picPath() {
-        return "/images/" + this.pic;
-    }
 }

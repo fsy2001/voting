@@ -36,7 +36,7 @@
 
     <div th:each="nominee : ${nominees}" class="nominee card" th:attr="data-name=${nominee.name}">
         <h2 th:text="${nominee.name}" class="nomineeName"></h2>
-        <img class="nominee-pic" th:src="${nominee.picPath()}" alt="Nominee Picture">
+        <img class="nominee-pic" th:src="@{'/images/' + ${nominee.pic}}" alt="Nominee Picture">
         <p th:text="${nominee.intro}"></p>
         <p th:text="${nominee.reason}"></p>
         <p>票数：<span th:text="${nominee.votes}" class="votes"></span></p>

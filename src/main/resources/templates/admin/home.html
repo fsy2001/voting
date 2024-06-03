@@ -75,6 +75,9 @@
                 <button th:value="${nominee.id}" data-type="warning" class="ui-button nominee-action-button"
                         onclick="clickChangeVoteButton(this)">修改票数
                 </button>
+                <a th:href="@{'/admin/vote?id=' + ${nominee.id}}" type="primary" class="ui-button">
+                    查看票数趋势
+                </a>
             </div>
         </tr>
         </tbody>
