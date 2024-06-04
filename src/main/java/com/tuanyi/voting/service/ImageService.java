@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 @Service
 public class ImageService {
-    @Value("${image.location}")
+    @Value("${image-location}")
     private String directory;
 
     public String saveImage(MultipartFile image) throws IOException {

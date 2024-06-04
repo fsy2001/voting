@@ -2,13 +2,18 @@ package com.tuanyi.voting.controller;
 
 import com.tuanyi.voting.service.IdentificationService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 public class IndexController {
     private final IdentificationService identificationService;
+
+    @Value("${oauth.client-id}")
+    private String clientId;
 
     public IndexController(IdentificationService identificationService) {
         this.identificationService = identificationService;
@@ -19,10 +24,23 @@ public class IndexController {
         return "index";
     }
 
+    @GetMapping("/forbidden")
+    public String forbidden() {
+        return "exception/forbidden";
+    }
+
     @GetMapping("/uis")
     public String uis(HttpServletRequest request, @RequestParam(value = "code", required = false) String code) {
         if (code == null) {
-            return "redirect:https://tac.fudan.edu.cn/oauth2/authorize.act?client_id=fcd2af24-560c-45d4-ba6d-8f01aa8270f6&response_type=code&scope=basic%20mobile&state=weGo123&redirect_uri=https://tuanyi.fudan.edu.cn/uis";
+            var redirectURI = UriComponentsBuilder
+                    .fromUriString("https://tac.fudan.edu.cn/oauth2/authorize.act")
+                    .queryParam("client_id", clientId)
+                    .queryParam("response_type", "code")
+                    .queryParam("scope", "basic mobile")
+                    .queryParam("state", "weGo123")
+                    .queryParam("redirect_uri", "https://tuanyi.fudan.edu.cn/uis")
+                    .build().toString();
+            return "redirect:" + redirectURI;
         }
 
         try {
@@ -30,7 +48,7 @@ public class IndexController {
             request.getSession().setAttribute("user", user);
             return "redirect:/";
         } catch (Exception e) {
-            return "failed";
+            return "exception/login-failed";
         }
     }
 }

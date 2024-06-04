@@ -60,7 +60,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             writer.println("没有权限");
             writer.flush();
         } else {
-            response.sendRedirect("/");
+            response.sendRedirect("/forbidden");
         }
     }
 }
