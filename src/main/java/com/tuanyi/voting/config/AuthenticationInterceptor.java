@@ -28,9 +28,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        // TODO: remove this in production
         var privilegedURI = uri.startsWith("/admin") || uri.startsWith("/api/admin");
-        if (/* privilegedURI && */ !user.isAdmin) {
+        if (privilegedURI && !user.isAdmin) {
             handleForbidden(uri, response);
             return false;
         }
