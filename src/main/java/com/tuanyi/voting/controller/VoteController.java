@@ -8,6 +8,7 @@ import com.tuanyi.voting.repository.VoteRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -25,6 +26,12 @@ public class VoteController {
     private final NomineeRepository nomineeRepository;
     private final VoteRepository voteRepository;
 
+    @Value("${voting-deadline}")
+    private LocalDateTime votingDeadline;
+
+    @Value("${votes-visible-until}")
+    private LocalDateTime votesVisibleDeadline;
+
     public VoteController(UserRepository userRepository, NomineeRepository nomineeRepository, VoteRepository voteRepository) {
         this.userRepository = userRepository;
         this.nomineeRepository = nomineeRepository;
@@ -33,10 +40,12 @@ public class VoteController {
 
     @GetMapping("/vote")
     public ModelAndView votePage() {
-        var nominees = nomineeRepository.getNomineeByStateOrderByVotesDesc(NominationState.APPROVED);
-
+        var now = LocalDateTime.now();
+        var votesVisible = now.isBefore(votesVisibleDeadline);
+        var nominees = votesVisible ? nomineeRepository.getNomineeByStateOrderByVotesDesc(NominationState.APPROVED) : nomineeRepository.getNomineesByStateOrderByIdDesc(NominationState.APPROVED);
         var modelAndView = new ModelAndView("user/vote");
         modelAndView.addObject("nominees", nominees);
+        modelAndView.addObject("votesVisible", votesVisible);
         return modelAndView;
     }
 
@@ -44,9 +53,17 @@ public class VoteController {
     @ResponseBody
     @Transactional
     public synchronized String voteAPI(HttpServletRequest request,
-                          HttpServletResponse response,
-                          @RequestAttribute("userId") String userId,
-                          @RequestParam(value = "nominee") String nomineeId) {
+                                       HttpServletResponse response,
+                                       @RequestAttribute("userId") String userId,
+                                       @RequestParam(value = "nominee") String nomineeId) {
+        var now = LocalDateTime.now();
+        var today = now.toLocalDate();
+
+        if (now.isAfter(votingDeadline)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return "投票已结束";
+        }
+
         voteLock.lock(); // prevent concurrent execution
         try {
             var nominee = nomineeRepository.getNomineeById(Integer.parseInt(nomineeId));
@@ -58,8 +75,6 @@ public class VoteController {
 
             var user = userRepository.findByUserId(userId);
             var lastVote = user.lastVote;
-            var now = LocalDateTime.now();
-            var today = now.toLocalDate();
 
             // refresh left vote count on a new day
             if (lastVote != null) {

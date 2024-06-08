@@ -39,7 +39,10 @@
         <img class="nominee-pic" th:src="@{'/images/' + ${nominee.pic}}" alt="Nominee Picture">
         <p th:text="${nominee.intro}"></p>
         <p th:text="${nominee.reason}"></p>
-        <p>票数：<span th:text="${nominee.votes}" class="votes"></span></p>
+        <p>票数：
+            <span th:if="${votesVisible}" th:text="${nominee.votes}" class="votes"></span>
+            <span th:unless="${votesVisible}">***</span>
+        </p>
         <button class="ui-button" onclick="voteForNominee(this)" th:attr="data-id=${nominee.id}">投票</button>
     </div>
 </main>
