@@ -60,7 +60,7 @@ public class VoteController {
         var today = now.toLocalDate();
 
         if (now.isAfter(votingDeadline)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "投票已结束";
         }
 
@@ -116,7 +116,7 @@ public class VoteController {
             nominee.votes += 1;
             nomineeRepository.save(nominee);
 
-            response.setStatus(HttpServletResponse.SC_OK);
+            response.setStatus(HttpServletResponse.SC_CREATED);
             return "投票成功，今日还剩" + (user.leftVotes) + "票";
         } finally {
             voteLock.unlock();

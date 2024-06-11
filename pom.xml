@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.tuanyi</groupId>
     <artifactId>voting</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
     <name>voting</name>
     <description>voting</description>

@@ -59,6 +59,7 @@ public class AdminController {
         }
 
         nomineeRepository.save(nominee);
+        response.setStatus(HttpServletResponse.SC_ACCEPTED);
         return "成功";
     }
 
@@ -73,6 +74,7 @@ public class AdminController {
         }
         user.isAdmin = true;
         userRepository.save(user);
+        response.setStatus(HttpServletResponse.SC_CREATED);
         return "成功";
     }
 
@@ -89,6 +91,7 @@ public class AdminController {
 
         nominee.votes = newVote;
         nomineeRepository.save(nominee);
+        response.setStatus(HttpServletResponse.SC_ACCEPTED);
         return "成功";
     }
 
