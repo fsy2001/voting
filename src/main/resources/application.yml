@@ -20,5 +20,5 @@ oauth:
   client-id: ${CLIENT_ID:}
   client-secret: ${CLIENT_SECRET:}
 image-location: ${IMAGE_LOCATION:}
-voting-deadline: 2024-06-12T12:30:00
-votes-visible-until: 2024-06-09T12:30:00
+voting-deadline: ${VOTING_DDL:2024-06-12T12:30:00}
+votes-visible-until: ${VOTING_VISIBLE_DDL:2024-06-09T12:30:00}
