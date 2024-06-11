@@ -82,7 +82,10 @@
             successTip.innerText = result
             successTip.open = true
             let votesSpan = button.previousElementSibling.children[0]
-            votesSpan.textContent = String(parseInt(votesSpan.textContent) + 1)
+            let previousVoteCount = parseInt(votesSpan.textContent)
+            if (!isNaN(previousVoteCount)) {
+                votesSpan.textContent = String(previousVoteCount + 1)
+            }
         } else {
             let failedTip = document.getElementById('failed')
             let failedReason = document.getElementById('failed-reason')
