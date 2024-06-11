@@ -7,15 +7,21 @@ import com.tuanyi.voting.model.User;
 import com.tuanyi.voting.repository.NomineeRepository;
 import com.tuanyi.voting.service.ImageService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
+
 @Controller
 public class NomineeController {
     private final NomineeRepository nomineeRepository;
     private final ImageService imageService;
+
+    @Value("${voting-deadline}")
+    private LocalDateTime votingDeadline;
 
     public NomineeController(NomineeRepository nomineeRepository, ImageService imageService) {
         this.nomineeRepository = nomineeRepository;
@@ -45,6 +51,11 @@ public class NomineeController {
                                    @RequestParam("pic") MultipartFile pic,
                                    @RequestParam("intro") String intro,
                                    @RequestParam("contact") String contact) {
+        var now = LocalDateTime.now();
+        if (now.isAfter(votingDeadline)) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return "投票已结束";
+        }
 
         if (name.length() > 50 || reason.length() > 100 || intro.length() > 50 || contact.length() > 50) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -90,6 +101,7 @@ public class NomineeController {
 
         nomineeRepository.save(nominee);
 
+        response.setStatus(HttpServletResponse.SC_CREATED);
         return "创建成功";
     }
 }
