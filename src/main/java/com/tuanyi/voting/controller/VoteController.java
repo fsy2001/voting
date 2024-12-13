@@ -2,7 +2,7 @@ package com.tuanyi.voting.controller;
 
 import com.tuanyi.voting.model.NominationState;
 import com.tuanyi.voting.model.Vote;
-import com.tuanyi.voting.repository.NomineeRepository;
+import com.tuanyi.voting.repository.SongRepository;
 import com.tuanyi.voting.repository.UserRepository;
 import com.tuanyi.voting.repository.VoteRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class VoteController {
     private final ReentrantLock voteLock = new ReentrantLock();
     private final UserRepository userRepository;
-    private final NomineeRepository nomineeRepository;
+    private final SongRepository songRepository;
     private final VoteRepository voteRepository;
 
     @Value("${voting-deadline}")
@@ -32,9 +32,9 @@ public class VoteController {
     @Value("${votes-visible-until}")
     private LocalDateTime votesVisibleDeadline;
 
-    public VoteController(UserRepository userRepository, NomineeRepository nomineeRepository, VoteRepository voteRepository) {
+    public VoteController(UserRepository userRepository, SongRepository songRepository, VoteRepository voteRepository) {
         this.userRepository = userRepository;
-        this.nomineeRepository = nomineeRepository;
+        this.songRepository = songRepository;
         this.voteRepository = voteRepository;
     }
 
@@ -42,9 +42,9 @@ public class VoteController {
     public ModelAndView votePage() {
         var now = LocalDateTime.now();
         var votesVisible = now.isBefore(votesVisibleDeadline);
-        var nominees = votesVisible ? nomineeRepository.getNomineeByStateOrderByVotesDesc(NominationState.APPROVED) : nomineeRepository.getNomineesByStateOrderByIdDesc(NominationState.APPROVED);
+        var songs = votesVisible ? songRepository.getByStateOrderByVotesDesc(NominationState.APPROVED) : songRepository.getByStateOrderByIdDesc(NominationState.APPROVED);
         var modelAndView = new ModelAndView("user/vote");
-        modelAndView.addObject("nominees", nominees);
+        modelAndView.addObject("songs", songs);
         modelAndView.addObject("votesVisible", votesVisible);
         return modelAndView;
     }
@@ -55,7 +55,7 @@ public class VoteController {
     public synchronized String voteAPI(HttpServletRequest request,
                                        HttpServletResponse response,
                                        @RequestAttribute("userId") String userId,
-                                       @RequestParam(value = "nominee") String nomineeId) {
+                                       @RequestParam(value = "songId") String songId) {
         var now = LocalDateTime.now();
         var today = now.toLocalDate();
 
@@ -66,9 +66,9 @@ public class VoteController {
 
         voteLock.lock(); // prevent concurrent execution
         try {
-            var nominee = nomineeRepository.getNomineeById(Integer.parseInt(nomineeId));
+            var song = songRepository.getSongById(Integer.parseInt(songId));
 
-            if (nominee == null) {
+            if (song == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return "候选人不存在";
             }
@@ -90,7 +90,7 @@ public class VoteController {
                 return "投票次数已用完";
             }
 
-            var allVotes = voteRepository.findAllByUserIdAndNomineeId(user.userId, nominee.id);
+            var allVotes = voteRepository.findAllByUserIdAndSongId(user.userId, song.id);
             var voteCount = allVotes
                     .stream()
                     .filter(vote -> vote.voteTime.toLocalDate().equals(today))
@@ -108,13 +108,13 @@ public class VoteController {
 
             var vote = new Vote();
             vote.userId = user.userId;
-            vote.nomineeId = nominee.id;
+            vote.songId = song.id;
             vote.voteTime = now;
             vote.ip = request.getHeader("X-Real-IP");
             voteRepository.save(vote);
 
-            nominee.votes += 1;
-            nomineeRepository.save(nominee);
+            song.votes += 1;
+            songRepository.save(song);
 
             response.setStatus(HttpServletResponse.SC_CREATED);
             return "投票成功，今日还剩" + (user.leftVotes) + "票";

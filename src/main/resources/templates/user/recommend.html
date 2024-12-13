@@ -39,7 +39,6 @@
     </style>
 </head>
 <body>
-<ui-lighttip id="recommend-info">推荐他人需要征得对方同意</ui-lighttip>
 
 <form id="nomineeForm" enctype="multipart/form-data" class="sheet" is="ui-form" is-validate>
     <h1 class="title">我要提名</h1>
@@ -57,16 +56,13 @@
     </p>
 
     <div class="form-row">
-        <label>类型：</label>
-        <input type="radio" id="self" name="type" is="ui-radio" value="SELF">
-        <label for="self">自荐</label>
-        <input type="radio" id="other" name="type" is="ui-radio" value="OTHER" onclick="showRecommendAlert()">
-        <label for="other">推荐他人</label>
+        <label for="name">被提名人：</label>
+        <input type="text" id="name" name="name" placeholder="团体/个人的名称" is="ui-input">
     </div>
 
     <div class="form-row">
-        <label for="name">被提名人：</label>
-        <input type="text" id="name" name="name" placeholder="团体/个人的名称" is="ui-input">
+        <label for="artist">歌手：</label>
+        <input type="text" id="artist" name="artist" placeholder="歌手" is="ui-input">
     </div>
 
     <div class="form-row">
@@ -87,12 +83,6 @@
         <div class="ui-textarea-x" style="max-width:500px; margin-top:10px;">
             <textarea id="intro" name="intro" maxlength="50" placeholder="50字以内" class="ui-textarea" rows="3"></textarea>
         </div>
-    </div>
-
-    <div class="form-row">
-        <label for="contact">被提名人联系方式：</label>
-        <div class="ui-textarea-x" style="max-width:500px; margin-top:10px;"></div>
-        <input type="text" id="contact" name="contact" placeholder="联系方式仅为工作组收集，不在投票页面展示" width="100%" is="ui-input">
     </div>
 
     <div class="form-row submit-row">
@@ -124,11 +114,6 @@
         if (response.ok) {
             window.location.href = "/nominee";
         }
-    }
-
-    function showRecommendAlert() {
-        let tip = document.getElementById('recommend-info');
-        tip.show();
     }
 </script>
 </body>

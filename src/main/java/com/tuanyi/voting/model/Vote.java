@@ -12,6 +12,6 @@ public class Vote {
     public Integer id;
     public String userId;
     public String ip;
-    public Integer nomineeId;
+    public Integer songId;
     public LocalDateTime voteTime;
 }

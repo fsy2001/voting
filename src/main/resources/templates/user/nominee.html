@@ -78,21 +78,21 @@
             </div>
         </div>
 
-        <div th:each="nominee : ${nominees}" class="nomination-card card">
+        <div th:each="songs : ${songs}" class="nomination-card card">
             <div class="nomination-card-top">
                 <img class="nomination-card-image" th:src="@{'/images/' + ${nominee.pic}}" alt="">
                 <div class="nomination-card-text">
-                    <h2><span th:text="${nominee.name}"></span> <span class="nominee-id"># <span
-                            th:text="${nominee.id}"></span></span></h2>
-                    <p th:text="${nominee.intro}" class="nomination-reason">
+                    <h2><span th:text="${songs.name}"></span> <span class="nominee-id"># <span
+                            th:text="${songs.id}"></span></span></h2>
+                    <p th:text="${songs.intro}" class="nomination-reason">
                     </p>
                 </div>
             </div>
 
             <span>
                 状态：
-                <span th:text="${nominee.state.getStatusName()}"></span>
-                <span th:text="${nominee.rejectReason}"></span>
+                <span th:text="${songs.state.getStatusName()}"></span>
+                <span th:text="${songs.rejectReason}"></span>
             </span>
         </div>
     </main>

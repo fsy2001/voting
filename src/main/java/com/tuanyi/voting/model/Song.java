@@ -4,15 +4,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "nominee")
-public class Nominee {
+public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
     public String userId;
-    public NominationType type;
     public String name;
+    public String artist;
     public Integer votes;
-    public String contact;
     public String pic;
     public NominationState state;
     public String rejectReason;

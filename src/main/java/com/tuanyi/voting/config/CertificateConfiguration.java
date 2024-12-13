@@ -10,7 +10,7 @@ import java.net.http.HttpClient;
 import java.security.cert.X509Certificate;
 
 @Configuration
-public class AppConfig {
+public class CertificateConfiguration {
     @Bean
     public HttpClient httpClient() {
         try {

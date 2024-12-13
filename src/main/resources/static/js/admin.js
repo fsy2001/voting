@@ -18,7 +18,7 @@ function clickChangeVoteButton(button) {
 }
 
 async function approveNominee() {
-    let response = await fetch(`/api/admin/approve-nominee?approve=true&id=${selectedNomineeId}`)
+    let response = await fetch(`/api/admin/approve-song?approve=true&songId=${selectedNomineeId}`)
     let message = await response.text()
     let dialog = new Dialog()
     dialog.alert(message, {type: response.ok ? 'success' : 'danger'})
@@ -30,7 +30,7 @@ async function rejectNominee() {
 
     let textField = document.getElementById('reject-reason')
     let reason = textField.value
-    let response = await fetch(`/api/admin/approve-nominee?approve=false&id=${selectedNomineeId}&reason=${reason}`)
+    let response = await fetch(`/api/admin/approve-song?approve=false&songId=${selectedNomineeId}&reason=${reason}`)
     let message = await response.text()
     let dialog = new Dialog()
     dialog.alert(message, {type: response.ok ? 'success' : 'danger'})
@@ -42,7 +42,7 @@ async function changeVote() {
 
     let textField = document.getElementById('change-vote')
     let newVote = textField.value
-    let response = await fetch(`/api/admin/change-vote?nomineeId=${selectedNomineeId}&newVote=${newVote}`)
+    let response = await fetch(`/api/admin/change-vote?songId=${selectedNomineeId}&newVote=${newVote}`)
     let message = await response.text()
     let dialog = new Dialog()
     dialog.alert(message, {type: response.ok ? 'success' : 'danger'})

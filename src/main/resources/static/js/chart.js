@@ -1,7 +1,7 @@
 async function drawChart() {
     const chart = document.getElementById('chart')
     const id = chart.getAttribute('value')
-    const response = await fetch(`/api/admin/vote?id=${id}`)
+    const response = await fetch(`/api/admin/vote?songId=${id}`)
 
     if (response.ok) {
         let content = await response.json()

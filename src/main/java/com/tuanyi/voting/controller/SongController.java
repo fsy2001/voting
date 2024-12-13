@@ -1,10 +1,9 @@
 package com.tuanyi.voting.controller;
 
 import com.tuanyi.voting.model.NominationState;
-import com.tuanyi.voting.model.NominationType;
-import com.tuanyi.voting.model.Nominee;
+import com.tuanyi.voting.model.Song;
 import com.tuanyi.voting.model.User;
-import com.tuanyi.voting.repository.NomineeRepository;
+import com.tuanyi.voting.repository.SongRepository;
 import com.tuanyi.voting.service.ImageService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,20 +15,20 @@ import org.springframework.web.servlet.ModelAndView;
 import java.time.LocalDateTime;
 
 @Controller
-public class NomineeController {
-    private final NomineeRepository nomineeRepository;
+public class SongController {
+    private final SongRepository songRepository;
     private final ImageService imageService;
 
     @Value("${voting-deadline}")
     private LocalDateTime votingDeadline;
 
-    public NomineeController(NomineeRepository nomineeRepository, ImageService imageService) {
-        this.nomineeRepository = nomineeRepository;
+    public SongController(SongRepository songRepository, ImageService imageService) {
+        this.songRepository = songRepository;
         this.imageService = imageService;
     }
 
     @GetMapping("/recommend")
-    public String recommendNomineePage() {
+    public String recommendPage() {
         return "user/recommend";
     }
 
@@ -37,37 +36,28 @@ public class NomineeController {
     public ModelAndView myNomineePage(@RequestAttribute("user") User user) {
         var modelAndView = new ModelAndView("user/nominee");
         modelAndView.addObject("user", user);
-        modelAndView.addObject("nominees", nomineeRepository.getNomineeByUserId(user.userId));
+        modelAndView.addObject("songs", songRepository.getByUserId(user.userId));
         return modelAndView;
     }
 
     @PostMapping("/api/recommend")
     @ResponseBody
-    public String createNomineeAPI(HttpServletResponse response,
-                                   @RequestAttribute("user") User user,
-                                   @RequestParam("type") String type,
-                                   @RequestParam("name") String name,
-                                   @RequestParam("reason") String reason,
-                                   @RequestParam("pic") MultipartFile pic,
-                                   @RequestParam("intro") String intro,
-                                   @RequestParam("contact") String contact) {
+    public String createSongAPI(HttpServletResponse response,
+                                @RequestAttribute("user") User user,
+                                @RequestParam("name") String name,
+                                @RequestParam("artist") String artist,
+                                @RequestParam("reason") String reason,
+                                @RequestParam("pic") MultipartFile pic,
+                                @RequestParam("intro") String intro) {
         var now = LocalDateTime.now();
         if (now.isAfter(votingDeadline)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return "投票已结束";
         }
 
-        if (name.length() > 50 || reason.length() > 100 || intro.length() > 50 || contact.length() > 50) {
+        if (name.length() > 50 || reason.length() > 100 || intro.length() > 50) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "输入的内容过长";
-        }
-
-        NominationType nominationType;
-        try {
-            nominationType = NominationType.valueOf(type);
-        } catch (IllegalArgumentException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return "不合法的参数";
         }
 
         if (pic.getSize() > 5 * 1024 * 1024) {
@@ -88,20 +78,19 @@ public class NomineeController {
             return "保存图片失败";
         }
 
-        var nominee = new Nominee();
-        nominee.type = nominationType;
-        nominee.name = name;
-        nominee.reason = reason;
-        nominee.pic = picName;
-        nominee.intro = intro;
-        nominee.contact = contact;
-        nominee.state = NominationState.PENDING;
-        nominee.votes = 0;
-        nominee.userId = user.userId;
+        var song = new Song();
+        song.name = name;
+        song.artist = artist;
+        song.reason = reason;
+        song.pic = picName;
+        song.intro = intro;
+        song.state = NominationState.PENDING;
+        song.votes = 0;
+        song.userId = user.userId;
 
-        nomineeRepository.save(nominee);
+        songRepository.save(song);
 
         response.setStatus(HttpServletResponse.SC_CREATED);
-        return "创建成功";
+        return "推荐成功";
     }
 }

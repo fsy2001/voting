@@ -24,9 +24,7 @@
             <th>图片</th>
             <th>介绍</th>
             <th>推荐理由</th>
-            <th>类别</th>
             <th>提名人</th>
-            <th>联系方式</th>
             <th>票数</th>
             <th>审核状态</th>
             <th>操作</th>
@@ -42,12 +40,7 @@
 
             <td th:text="${nominee.intro}" class="nominee-long-text"></td>
             <td th:text="${nominee.reason}" class="nominee-long-text"></td>
-            <td>
-                <span th:if="${nominee.type.name() == 'SELF'}">自荐</span>
-                <span th:if="${nominee.type.name() == 'OTHER'}">推荐</span>
-            </td>
             <td th:text="${nominee.userId}"></td>
-            <td th:text="${nominee.contact}" class="nominee-long-text"></td>
             <td th:text="${nominee.votes}"></td>
             <td class="nominee-long-text">
                 <span th:if="${nominee.state.name() == 'DRAFT'}">草稿</span>
@@ -67,10 +60,10 @@
 
             <div th:id="@{'actions' + ${nominee.id}}" class="ui-drop-target nominee-menu" hidden>
                 <button th:value="${nominee.id}" data-type="success" class="ui-button nominee-action-button"
-                        onclick="clickApproveButton(this)">批准候选人
+                        onclick="clickApproveButton(this)">批准
                 </button>
                 <button th:value="${nominee.id}" data-type="danger" class="ui-button nominee-action-button"
-                        onclick="clickRejectButton(this)">拒绝候选人
+                        onclick="clickRejectButton(this)">拒绝
                 </button>
                 <button th:value="${nominee.id}" data-type="warning" class="ui-button nominee-action-button"
                         onclick="clickChangeVoteButton(this)">修改票数
@@ -85,7 +78,7 @@
 
     <dialog id="reject-dialog" is="ui-dialog">
         <h4 class="ui-dialog-title">
-            拒绝候选人
+            拒绝
         </h4>
         <form class="ui-dialog-body">
             <label for="reject-reason">拒绝理由：</label>

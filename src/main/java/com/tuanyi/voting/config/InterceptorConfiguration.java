@@ -5,10 +5,10 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class InterceptorConfiguration implements WebMvcConfigurer {
     private final AuthenticationInterceptor authenticationInterceptor;
 
-    public WebConfig(AuthenticationInterceptor authenticationInterceptor) {
+    public InterceptorConfiguration(AuthenticationInterceptor authenticationInterceptor) {
         this.authenticationInterceptor = authenticationInterceptor;
     }
 
