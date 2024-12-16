@@ -1,4 +1,9 @@
 spring:
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          cache-public: true
   application:
     name: voting
   servlet:

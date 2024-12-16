@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width">
+    <meta name=description content="2025元旦金曲夜投票系统">
     <title>2025元旦金曲夜</title>
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/external/ui.css">
@@ -71,7 +72,11 @@
 </head>
 <body>
 <a id="logo" href="/">
-    <img src="/image/logo.png" alt="复旦大学团委学生艺术团">
+    <picture>
+        <source srcset="/image/logo.avif" type="image/avif">
+        <source srcset="/image/logo.webp" type="image/webp">
+        <img src="/image/logo.png" alt="复旦大学团委学生艺术团">
+    </picture>
 </a>
 
 <section id="search-section">
@@ -100,9 +105,21 @@
     </p>
 </ui-lighttip>
 
-<img src="/image/sponsor.png" alt="FUJIFILM instax 一次成像｜京东校园" id="sponsor">
-<img src="/image/banner.png" alt="" id="bottom-banner">
-<img src="/image/locomotive-blur.png" alt="" id="locomotive-blur">
+<picture>
+    <source srcset="/image/sponsor.avif" type="image/avif">
+    <source srcset="/image/sponsor.webp" type="image/webp">
+    <img src="/image/sponsor.png" alt="FUJIFILM instax 一次成像｜京东校园" id="sponsor">
+</picture>
+<picture>
+    <source srcset="/image/banner.avif" type="image/avif">
+    <source srcset="/image/banner.webp" type="image/webp">
+    <img src="/image/banner.png" alt="" id="bottom-banner">
+</picture>
+<picture>
+    <source srcset="/image/locomotive-blur.avif" type="image/avif">
+    <source srcset="/image/locomotive-blur.webp" type="image/webp">
+    <img src="/image/locomotive-blur.png" alt="" id="locomotive-blur">
+</picture>
 
 <script>
     function searchFunction() {

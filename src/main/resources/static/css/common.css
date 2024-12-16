@@ -1,6 +1,7 @@
 @font-face {
     font-family: 'Canva';
-    src: url('../fonts/canva.woff');
+    src: url('../fonts/canva.woff2') format('woff2'),
+    url('../fonts/canva.woff') format('woff');
 }
 
 body {
@@ -25,6 +26,19 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
+}
+
+@supports (background-image: url('../image/background.webp')) {
+    body {
+        background-image: url('../image/background.webp');
+    }
+}
+
+
+@supports (background-image: url('../image/background.avif')) {
+    body {
+        background-image: url('../image/background.avif');
+    }
 }
 
 #bottom-banner {
