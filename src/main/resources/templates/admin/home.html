@@ -6,13 +6,13 @@
     <title>管理后台</title>
     <link rel="stylesheet" href="/css/admin.css">
     <script src="/js/admin.js" defer></script>
-    <link rel="stylesheet" href="https://unpkg.com/lu2/theme/edge/css/common/ui.css">
-    <script type="module" src="https://unpkg.com/lu2/theme/edge/js/common/all.js"></script>
+    <link rel="stylesheet" href="/external/ui.css">
+    <script type="module" src="/external/all.js"></script>
 </head>
 <body>
 
 <main id="tabs" class="ui-tab-tabs">
-    <button data-target="approve-nominee" name="tab-button" class="ui-tab-tab" is-tab open>审核候选人</button>
+    <button data-target="approve-nominee" name="tab-button" class="ui-tab-tab" is-tab open>审核候选歌曲</button>
     <button data-target="create-admin" name="tab-button" class="ui-tab-tab" is-tab>添加管理员</button>
 </main>
 
@@ -21,8 +21,6 @@
         <thead>
         <tr>
             <th>名称</th>
-            <th>图片</th>
-            <th>介绍</th>
             <th>推荐理由</th>
             <th>提名人</th>
             <th>票数</th>
@@ -34,11 +32,7 @@
         <tr th:each="nominee : ${nominees}">
             <td th:text="${nominee.name}">
             </td>
-            <td>
-                <a th:href="@{'/images/' + ${nominee.pic}}">显示</a>
-            </td>
 
-            <td th:text="${nominee.intro}" class="nominee-long-text"></td>
             <td th:text="${nominee.reason}" class="nominee-long-text"></td>
             <td th:text="${nominee.userId}"></td>
             <td th:text="${nominee.votes}"></td>

@@ -21,7 +21,7 @@ public class IndexController {
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "user/welcome";
     }
 
     @GetMapping("/forbidden")
@@ -30,7 +30,9 @@ public class IndexController {
     }
 
     @GetMapping("/uis")
-    public String uis(HttpServletRequest request, @RequestParam(value = "code", required = false) String code) {
+    public String uis(HttpServletRequest request,
+                      @RequestParam(value = "code", required = false) String code,
+                      @RequestParam(value = "from", required = false) String from) {
         if (code == null) {
             var redirectURI = UriComponentsBuilder
                     .fromUriString("https://tac.fudan.edu.cn/oauth2/authorize.act")
@@ -46,6 +48,9 @@ public class IndexController {
         try {
             var user = identificationService.getUserByCode(code);
             request.getSession().setAttribute("user", user);
+            if (from != null) {
+                return "redirect:" + from;
+            }
             return "redirect:/";
         } catch (Exception e) {
             return "exception/login-failed";

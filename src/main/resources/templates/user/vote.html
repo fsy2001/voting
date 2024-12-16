@@ -1,50 +1,96 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
-    <title>2024毕业之夜人物投票</title>
-    <meta name="viewport" content="width=device-width"/>
-    <link rel="stylesheet" href="https://unpkg.com/lu2/theme/edge/css/common/ui.css">
-    <link rel="stylesheet" href="/css/sheet.css">
-    <script type="module" src="https://unpkg.com/lu2/theme/edge/js/common/all.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>2025元旦金曲夜</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/external/ui.css">
+    <script type="module" src="/external/all.js"></script>
     <style>
-        body {
-            background-image: url("/image/background.png");
+        #search-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 50px;
         }
 
-        .nominee {
-            margin-top: 30px;
+        #search-box {
+            font-size: 20px;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            width: 300px;
+            text-align: center;
+            letter-spacing: 2px;
         }
 
-        .nominee-pic {
+        #search-box::placeholder {
+            color: white;
+        }
+
+        #search-box:focus {
+            outline: none;
+        }
+
+        .song {
             width: 100%;
-            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .song-container {
+            width: 80%;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.3);
+            font-size: 25px;
+            padding: 10px 20px;
+            margin: 10px 40px;
+            border-radius: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .vote-button {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 20px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 20px;
+            margin-left: 10px;
+        }
+
+        .song-section {
+            margin-bottom: 70px;
         }
     </style>
-
 </head>
 <body>
+<a id="logo" href="/">
+    <img src="/image/logo.png" alt="复旦大学团委学生艺术团">
+</a>
 
-<main class="sheet">
-    <h1 class="title">投票</h1>
+<section id="search-section">
+    <label for="search-box"></label>
+    <input onkeyup="searchFunction()" type="search" id="search-box" class="canva" placeholder="根据关键词查找歌曲">
+</section>
 
-    <span class="ui-input ui-input-search" align="end">
-        <label for="searchBox"></label>
-        <input id="searchBox" onkeyup="searchFunction()" type="search" placeholder="搜索">
-        <button class="ui-icon-search">搜索</button>
-    </span>
-
-    <div th:each="song : ${songs}" class="nominee card" th:attr="data-name=${song.name}">
-        <h2 th:text="${song.name}" class="nomineeName"></h2>
-        <img class="nominee-pic" th:src="@{'/images/' + ${song.pic}}" alt="图片">
-        <p th:text="${song.intro}"></p>
-        <p th:text="${song.reason}"></p>
-        <p>票数：
-            <span th:if="${votesVisible}" th:text="${song.votes}" class="votes"></span>
-            <span th:unless="${votesVisible}">***</span>
-        </p>
-        <button class="ui-button" onclick="voteForNominee(this)" th:attr="data-id=${song.id}">投票</button>
-    </div>
+<main class="song-section">
+    <section th:attr="data-name=${song.name}" th:each="song : ${songs}" class="song">
+        <div class="song-container">
+            <span th:text="${song.name}"></span>
+            <span th:text="${song.artist}"></span>
+            <span>
+            <span th:text="${song.votes}"></span>
+            <span>票</span>
+        </span>
+            <button class="vote-button canva" onclick="voteForNominee(this)" th:attr="data-id=${song.id}">· 投票 ·</button>
+        </div>
+    </section>
 </main>
 
 <ui-lighttip id="success"></ui-lighttip>
@@ -54,11 +100,15 @@
     </p>
 </ui-lighttip>
 
+<img src="/image/sponsor.png" alt="FUJIFILM instax 一次成像｜京东校园" id="sponsor">
+<img src="/image/banner.png" alt="" id="bottom-banner">
+<img src="/image/locomotive-blur.png" alt="" id="locomotive-blur">
+
 <script>
     function searchFunction() {
-        let searchBox = document.getElementById('searchBox')
+        let searchBox = document.getElementById('search-box')
         let searchWord = searchBox.value
-        let songs = document.getElementsByClassName('nominee')
+        let songs = document.getElementsByClassName('song')
         for (let i = 0; i < songs.length; i++) {
             let songName = songs[i].getAttribute('data-name')
             if (songName.includes(searchWord) || searchWord === '') {

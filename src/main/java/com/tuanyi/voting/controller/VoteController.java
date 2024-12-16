@@ -70,7 +70,7 @@ public class VoteController {
 
             if (song == null) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return "候选人不存在";
+                return "候选曲目不存在";
             }
 
             var user = userRepository.findByUserId(userId);
@@ -98,7 +98,7 @@ public class VoteController {
 
             if (voteCount >= 3) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                return "同一候选人每天只能投三票";
+                return "同一曲目每天只能投三票";
             }
 
             user.leftVotes -= 1;

@@ -1,0 +1,62 @@
+@font-face {
+    font-family: 'Canva';
+    src: url('../fonts/canva.woff');
+}
+
+body {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    zoom: 1;
+    border: 0;
+    margin: 0;
+    font-family: 'Canva', sans-serif;
+}
+
+.canva {
+    font-family: 'Canva', sans-serif;
+    color: white;
+}
+
+body {
+    background-image: url("../image/background.png");
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+
+#bottom-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+}
+
+#sponsor {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    z-index: 4;
+    transform: translateX(-50%);
+    width: 6em;
+}
+
+#logo {
+    padding-top: 30px;
+    padding-left: 40px;
+}
+
+#logo img {
+    width: 60px;
+}
+
+#locomotive-blur {
+    position: fixed;
+    bottom: 10px;
+    right: 0;
+    width: 80%;
+    z-index: -1;
+}

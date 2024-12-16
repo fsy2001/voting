@@ -7,6 +7,8 @@ spring:
       max-request-size: 10MB
   jpa:
     open-in-view: true
+    hibernate:
+      ddl-auto: update
   datasource:
     url: ${DB_URL:}
     username: ${DB_USER:}
@@ -19,6 +21,6 @@ server:
 oauth:
   client-id: ${CLIENT_ID:}
   client-secret: ${CLIENT_SECRET:}
-image-location: ${IMAGE_LOCATION:}
-voting-deadline: ${VOTING_DDL:2024-06-12T12:30:00}
-votes-visible-until: ${VOTING_VISIBLE_DDL:2024-06-09T12:30:00}
+
+voting-deadline: ${VOTING_DDL:2024-12-30T12:30:00}
+votes-visible-until: ${VOTING_VISIBLE_DDL:2024-12-30T12:30:00}

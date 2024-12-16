@@ -29,6 +29,7 @@ public class IdentificationService {
         this.userRepository = userRepository;
     }
 
+
     public User getUserByCode(String code) throws IOException, InterruptedException {
         var oauthURI = UriComponentsBuilder
                 .fromUriString("https://tac.fudan.edu.cn/oauth2/token.act")

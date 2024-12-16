@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>2025元旦金曲夜</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        .title {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin: 60px 0;
+        }
+
+        .title span {
+            color: white;
+            font-size: 40px;
+        }
+
+        .nomination {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .nomination-container {
+            width: 80%;
+            margin: 10px 40px;
+            border-radius: 25px;
+            color: white;
+            font-size: 25px;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .nomination-info {
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .review-status {
+            padding: 10px 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<a id="logo" href="/">
+    <img src="/image/logo.png" alt="复旦大学团委学生艺术团">
+</a>
+
+<section class="title">
+    <span>· 我的提名 ·</span>
+</section>
+
+<section th:each="song : ${songs}" class="nomination">
+    <div class="nomination-container">
+        <div class="nomination-info">
+            <span th:text="${song.name}"></span>
+            <span th:text="${song.artist}">歌手</span>
+            <span>
+                <span th:text="${song.votes}"></span>
+                <span>票</span>
+            </span>
+        </div>
+        <div class="review-status">
+            <span th:text="${song.state.getStatusName()}"></span>
+            <span th:text="${song.rejectReason}"></span>
+        </div>
+    </div>
+</section>
+
+<img src="/image/sponsor.png" alt="FUJIFILM instax 一次成像｜京东校园" id="sponsor">
+<img src="/image/banner.png" alt="" id="bottom-banner">
+<img src="/image/locomotive-blur.png" alt="" id="locomotive-blur">
+</body>

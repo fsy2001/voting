@@ -1,105 +1,130 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh_CN">
 <head>
-    <title>2024毕业之夜人物投票</title>
-    <meta name="viewport" content="width=device-width"/>
-    <link rel="stylesheet" href="https://unpkg.com/lu2/theme/edge/css/common/ui.css">
-    <link rel="stylesheet" href="/css/sheet.css">
-    <script type="module" src="https://unpkg.com/lu2/theme/edge/js/common/all.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>2025元旦金曲夜</title>
+    <link rel="stylesheet" href="/css/common.css">
     <style>
-        body {
-            background-image: url("/image/background.png");
-        }
-
-        .sheet {
-            margin: 30px auto;
-            width: 80%;
-            max-width: 300em;
-            background-color: #ffffff;
-            padding: 20px;
+        .block {
+            color: white;
+            letter-spacing: 1px;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 10px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 10px 10px 0;
         }
 
-        .title {
-            text-align: center;
-            font-weight: bold;
+        .intro {
+            line-height: 1.7em;
+            font-size: 14px;
+            font-weight: lighter;
+            margin-bottom: 2em;
         }
 
-        .form-row {
-            margin: 30px 0;
-        }
-
-        .submit-row {
-            margin-top: 60px;
+        .input-block {
+            font-size: 18px;
             display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            font-size: 18px;
+            color: white;
+            background: none;
+            border: none;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+        }
+
+        #reason-block {
+            display: block;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            background: none;
+            border: none;
+            color: white;
+            font-size: large;
+            resize: none;
+            height: 4em;
+            margin-top: 0.5em;
+        }
+
+        textarea:focus {
+            outline: none;
+        }
+
+        #submit-section {
+            display: flex;
+            flex-direction: row;
             justify-content: center;
+
+            margin-top: 20px;
+            margin-bottom: 70px;
+        }
+
+        button {
+            font-size: 35px;
+            letter-spacing: 3px;
+            background: none;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<form id="nomineeForm" enctype="multipart/form-data" class="sheet" is="ui-form" is-validate>
-    <h1 class="title">我要提名</h1>
+<a id="logo" href="/">
+    <img src="/image/logo.png" alt="复旦大学团委学生艺术团">
+</a>
 
-    <p>
-        UIS登录后，可提名你心中的复旦大学2024毕业之夜人物（个人或团体、团体需以毕业生为代表），我们将以获得提名的毕业生为候选榜单，由师生校友共同投票选择，与我们共同打造这场独一无二的毕业盛典，展现复旦学子的青春风貌与无限可能。<br>
-        提名面向范围：复旦本科、硕士、博士毕业生，全校教职工及其他与复旦应届毕业生相关的人士。<br>
-        投票规则：每人每日10票，每人每日单组候选人投票不可超过3票。<br>
-        投票时间：即日起至6.12 12:30 <br>
-        活动时间：6月16日18:30 <br>
-    </p>
 
-    <p>
-        注：提名审核需要时间，请在1~2小时后于“我的提名”界面查看上榜情况。为了防止跟票，6月9日（倒计时3天起）将关闭票数显示。
-    </p>
+<form id="song-form">
+    <section class="intro block" style="margin-top: 50px;">
+        UIS登录后，可提名你心中的年度歌曲，我们将以提名的歌曲为候选榜单，由师生校友共同投票。最终榜单前十名的歌曲将在2025元旦金曲夜的舞台上由校园歌手演绎，成为复旦人的年度音乐回忆~
+    </section>
 
-    <div class="form-row">
-        <label for="name">被提名人：</label>
-        <input type="text" id="name" name="name" placeholder="团体/个人的名称" is="ui-input">
-    </div>
+    <section class="block input-block">
+        <label for="name">歌曲名称：</label>
+        <input type="text" id="name" name="name">
+    </section>
 
-    <div class="form-row">
+    <section class="block input-block">
         <label for="artist">歌手：</label>
-        <input type="text" id="artist" name="artist" placeholder="歌手" is="ui-input">
-    </div>
+        <input type="text" id="artist" name="artist">
+    </section>
 
-    <div class="form-row">
-        <label for="reason">提名理由：</label>
-        <br>
-        <div class="ui-textarea-x" style="max-width:500px; margin-top:10px;">
-            <textarea id="reason" name="reason" class="ui-textarea" placeholder="100字以内" maxlength="100" rows="5"></textarea>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <label class="file-label" for="pic">被提名人照片：</label>
-        <input type="file" id="pic" name="pic" placeholder="请上传大小在5MB以内的照片">
-    </div>
-
-    <div class="form-row">
-        <label for="intro">被提名人信息：</label>
-        <div class="ui-textarea-x" style="max-width:500px; margin-top:10px;">
-            <textarea id="intro" name="intro" maxlength="50" placeholder="50字以内" class="ui-textarea" rows="3"></textarea>
-        </div>
-    </div>
-
-    <div class="form-row submit-row">
-        <button onclick="submitForm()" type="button" is="ui-button" data-type="primary">提交</button>
-    </div>
+    <section class="block input-block" id="reason-block">
+        <label for="reason">推荐理由：</label>
+        <textarea id="reason" name="reason"></textarea>
+    </section>
 </form>
 
-<script>
-    document.getElementById('pic').onchange = function () {
-        document.getElementById('pic').previousElementSibling.innerText = this.files[0].name
-    }
+<section id="submit-section">
+    <button class="canva" onclick="submitForm()">· 提名 ·</button>
+</section>
 
+
+<img src="/image/sponsor.png" alt="FUJIFILM instax 一次成像｜京东校园" id="sponsor">
+<img src="/image/banner.png" alt="" id="bottom-banner">
+<img src="/image/locomotive-blur.png" alt="" id="locomotive-blur">
+
+<script>
     async function submitForm() {
-        let form = document.getElementById('nomineeForm');
+        let form = document.getElementById('song-form');
         let formData = new FormData(form);
 
-        if (!formData.get('name') || !formData.get('reason') || !formData.get('pic') || !formData.get('intro') || !formData.get('contact')) {
+        if (!formData.get('name') || !formData.get('artist') || !formData.get('reason')) {
             alert('所有项都必须填写');
             return;
         }
@@ -112,9 +137,8 @@
         let message = await response.text();
         alert(message);
         if (response.ok) {
-            window.location.href = "/nominee";
+            window.location.href = "/my";
         }
     }
 </script>
 </body>
-</html>

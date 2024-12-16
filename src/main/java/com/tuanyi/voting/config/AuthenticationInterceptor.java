@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {
@@ -47,7 +48,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             writer.println("尚未登录");
             writer.flush();
         } else {
-            response.sendRedirect("/uis");
+            var origionalURI = UriComponentsBuilder.fromUriString(uri).build().toUri();
+
+            var redirectURI = UriComponentsBuilder.fromUriString("/uis")
+                            .queryParam("from", origionalURI.getPath())
+                            .build();
+            response.sendRedirect(redirectURI.toString());
         }
     }
 
