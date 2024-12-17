@@ -18,6 +18,7 @@
 
         #search-box {
             font-size: 20px;
+            font-family: sans-serif;
             color: white;
             background-color: rgba(255, 255, 255, 0.3);
             border: none;
@@ -30,29 +31,47 @@
 
         #search-box::placeholder {
             color: white;
+            font-family: 'Canva', sans-serif;
         }
 
         #search-box:focus {
             outline: none;
         }
 
-        .song {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
+        .song-section {
+            margin-bottom: 70px;
         }
 
-        .song-container {
+        table {
             width: 80%;
-            color: white;
             background-color: rgba(255, 255, 255, 0.3);
-            font-size: 25px;
-            padding: 10px 20px;
             margin: 10px 40px;
-            border-radius: 30px;
-            display: flex;
-            justify-content: space-between;
+            padding: 10px 0 10px 20px;
+            border-radius: 20px;
+            color: white;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        .col-song {
+            width: auto;
+        }
+
+        .song-content {
+            font-family: sans-serif;
+        }
+
+        .col-votes {
+            width: 50px;
+        }
+
+        .col-button {
+            width: 50px;
+            text-align: right;
         }
 
         .vote-button {
@@ -62,11 +81,10 @@
             padding: 5px 10px;
             border: none;
             border-radius: 20px;
-            margin-left: 10px;
         }
 
-        .song-section {
-            margin-bottom: 70px;
+        #success, #failed {
+            font-family: sans-serif;
         }
     </style>
 </head>
@@ -81,21 +99,33 @@
 
 <section id="search-section">
     <label for="search-box"></label>
-    <input onkeyup="searchFunction()" type="search" id="search-box" class="canva" placeholder="根据关键词查找歌曲">
+    <input onkeyup="searchFunction()" type="search" id="search-box" placeholder="根据关键词查找歌曲">
 </section>
 
 <main class="song-section">
-    <section th:attr="data-name=${song.name}" th:each="song : ${songs}" class="song">
-        <div class="song-container">
-            <span th:text="${song.name}"></span>
-            <span th:text="${song.artist}"></span>
-            <span>
-            <span th:text="${song.votes}"></span>
-            <span>票</span>
-        </span>
-            <button class="vote-button canva" onclick="voteForNominee(this)" th:attr="data-id=${song.id}">· 投票 ·</button>
-        </div>
-    </section>
+    <table>
+        <thead>
+        <tr>
+            <th class="col-song">歌曲信息</th>
+            <th class="col-votes">票数</th>
+            <th class="col-button"></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:attr="data-name=${song.name}" th:each="song : ${songs}" class="song">
+            <td class="col-song song-content">
+                <span th:text="${song.name}"></span>
+                <br>
+                <span th:text="${song.artist}"></span>
+            </td>
+            <td class="col-votes" th:text="${song.votes}"></td>
+            <td class="col-button">
+                <button class="vote-button canva" onclick="voteForNominee(this)" th:attr="data-id=${song.id}">投票</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </main>
 
 <ui-lighttip id="success"></ui-lighttip>
@@ -129,7 +159,7 @@
         for (let i = 0; i < songs.length; i++) {
             let songName = songs[i].getAttribute('data-name')
             if (songName.includes(searchWord) || searchWord === '') {
-                songs[i].style.display = 'block'
+                songs[i].style.display = 'table-row'
             } else {
                 songs[i].style.display = 'none'
             }
@@ -144,7 +174,7 @@
             let successTip = document.getElementById('success')
             successTip.innerText = result
             successTip.open = true
-            let votesSpan = button.previousElementSibling.children[0]
+            let votesSpan = button.parentElement.previousElementSibling
             let previousVoteCount = parseInt(votesSpan.textContent)
             if (!isNaN(previousVoteCount)) {
                 votesSpan.textContent = String(previousVoteCount + 1)
