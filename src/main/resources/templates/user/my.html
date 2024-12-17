@@ -19,32 +19,42 @@
             font-size: 40px;
         }
 
-        .nomination {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
+        .song-section {
+            margin-bottom: 70px;
         }
 
-        .nomination-container {
+        table {
             width: 80%;
-            margin: 10px 40px;
-            border-radius: 25px;
-            color: white;
-            font-size: 25px;
             background-color: rgba(255, 255, 255, 0.3);
+            margin: 10px 40px;
+            padding: 10px 0 10px 20px;
+            border-radius: 20px;
+            color: white;
         }
 
-        .nomination-info {
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
+        th, td {
+            text-align: left;
+            padding: 8px;
+            font-size: 16px;
         }
 
-        .review-status {
-            padding: 10px 20px;
-            font-size: 20px;
+        .col-song {
+            width: auto;
         }
+
+        .content {
+            font-family: sans-serif;
+        }
+
+        .col-votes {
+            width: 50px;
+        }
+
+        .col-status {
+            width: 50px;
+            text-align: right;
+        }
+
     </style>
 </head>
 <body>
@@ -60,22 +70,34 @@
     <span>· 我的提名 ·</span>
 </section>
 
-<section th:each="song : ${songs}" class="nomination">
-    <div class="nomination-container">
-        <div class="nomination-info">
-            <span th:text="${song.name}"></span>
-            <span th:text="${song.artist}">歌手</span>
-            <span>
+<main class="song-section">
+    <table>
+        <thead>
+        <tr>
+            <th class="col-song">歌曲信息</th>
+            <th class="col-votes">票数</th>
+            <th class="col-button">状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="song : ${songs}">
+            <td class="col-song">
+                <span class="content" th:text="${song.name}"></span>
+                <br>
+                <span class="content" th:text="${song.artist}"></span>
+            </td>
+            <td class="col-votes">
                 <span th:text="${song.votes}"></span>
-                <span>票</span>
-            </span>
-        </div>
-        <div class="review-status">
-            <span th:text="${song.state.getStatusName()}"></span>
-            <span th:text="${song.rejectReason}"></span>
-        </div>
-    </div>
-</section>
+            </td>
+            <td class="col-status">
+                <span class="content" th:text="${song.state.getStatusName()}"></span>
+                <br>
+                <span class="content" th:text="${song.rejectReason}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
 
 <picture>
     <source srcset="/image/sponsor.avif" type="image/avif">
