@@ -50,12 +50,13 @@ body {
 }
 
 #sponsor {
-    position: fixed;
-    bottom: 15px;
-    left: 50%;
-    z-index: 4;
-    transform: translateX(-50%);
     width: 6em;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #logo {
