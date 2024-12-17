@@ -19,8 +19,6 @@ services:
 
   app:
     image: voting
-    volumes:
-      - ${IMAGE_LOCATION}:/var/images
     build:
       context: ..
       dockerfile: deploy/Dockerfile
@@ -30,7 +28,6 @@ services:
       DB_URL: jdbc:mysql://db:3306/voting?useSSL=false&autoReconnect=true&characterEncoding=utf8
       DB_USER: ${MYSQL_USER}
       DB_PASSWORD: ${MYSQL_PASSWORD}
-      IMAGE_LOCATION: /var/images
       SERVER_PORT: 8080
     ports:
       - "8080:8080"
