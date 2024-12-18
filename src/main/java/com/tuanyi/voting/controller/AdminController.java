@@ -33,8 +33,8 @@ public class AdminController {
     @GetMapping("/admin")
     public ModelAndView homePage() {
         var modelAndView = new ModelAndView("admin/home");
-        var allNominees = songRepository.findAllByOrderByIdDesc();
-        modelAndView.addObject("nominees", allNominees);
+        var allSongs = songRepository.findAllByOrderByIdDesc();
+        modelAndView.addObject("songs", allSongs);
         return modelAndView;
     }
 
@@ -96,7 +96,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/vote")
-    public ModelAndView voteInspectionPage(@RequestParam(value = "songId") Integer songId) {
+    public ModelAndView voteInspectionPage(@RequestParam(value = "id") Integer songId) {
         var song = songRepository.getSongById(songId);
         var votes = voteRepository.findAllBySongIdOrderByVoteTimeDesc(songId);
         var modelAndView = new ModelAndView("admin/vote");

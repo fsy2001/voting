@@ -29,42 +29,44 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="nominee : ${nominees}">
-            <td th:text="${nominee.name}">
+        <tr th:each="song : ${songs}">
+            <td th:text="${song.name}">
             </td>
 
-            <td th:text="${nominee.reason}" class="nominee-long-text"></td>
-            <td th:text="${nominee.userId}"></td>
-            <td th:text="${nominee.votes}"></td>
+            <td th:text="${song.reason}" class="nominee-long-text"></td>
+            <td th:text="${song.userId}"></td>
+            <td th:text="${song.votes}"></td>
             <td class="nominee-long-text">
-                <span th:if="${nominee.state.name() == 'DRAFT'}">草稿</span>
-                <span th:if="${nominee.state.name() == 'PENDING'}">审核中</span>
-                <span th:if="${nominee.state.name() == 'APPROVED'}">已批准</span>
-                <span th:if="${nominee.state.name() == 'REJECTED'}">
+                <span th:if="${song.state.name() == 'DRAFT'}">草稿</span>
+                <span th:if="${song.state.name() == 'PENDING'}">审核中</span>
+                <span th:if="${song.state.name() == 'APPROVED'}">已批准</span>
+                <span th:if="${song.state.name() == 'REJECTED'}">
                     已拒绝
                     <br>
-                    理由：<span th:text="${nominee.rejectReason}"></span>
+                    理由：<span th:text="${song.rejectReason}"></span>
                 </span>
             </td>
             <td>
-                <ui-drop th:target="@{'actions' + ${nominee.id}}">
+                <ui-drop th:target="@{'actions' + ${song.id}}">
                     <a href="javascript:">操作</a>
                 </ui-drop>
             </td>
 
-            <div th:id="@{'actions' + ${nominee.id}}" class="ui-drop-target nominee-menu" hidden>
-                <button th:value="${nominee.id}" data-type="success" class="ui-button nominee-action-button"
-                        onclick="clickApproveButton(this)">批准
-                </button>
-                <button th:value="${nominee.id}" data-type="danger" class="ui-button nominee-action-button"
-                        onclick="clickRejectButton(this)">拒绝
-                </button>
-                <button th:value="${nominee.id}" data-type="warning" class="ui-button nominee-action-button"
-                        onclick="clickChangeVoteButton(this)">修改票数
-                </button>
-                <a th:href="@{'/admin/vote?id=' + ${nominee.id}}" type="primary" class="ui-button">
-                    查看票数趋势
-                </a>
+            <div th:id="@{'actions' + ${song.id}}" class="ui-drop-target" hidden>
+                <div class="nominee-menu">
+                    <button th:value="${song.id}" data-type="success" class="ui-button nominee-action-button"
+                            onclick="clickApproveButton(this)">批准
+                    </button>
+                    <button th:value="${song.id}" data-type="danger" class="ui-button nominee-action-button"
+                            onclick="clickRejectButton(this)">拒绝
+                    </button>
+                    <button th:value="${song.id}" data-type="warning" class="ui-button nominee-action-button"
+                            onclick="clickChangeVoteButton(this)">修改票数
+                    </button>
+                    <a th:href="@{'/admin/vote?id=' + ${song.id}}" type="primary" class="ui-button nominee-action-button">
+                        查看票数趋势
+                    </a>
+                </div>
             </div>
         </tr>
         </tbody>
