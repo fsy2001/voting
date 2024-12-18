@@ -49,23 +49,22 @@ body {
     z-index: 3;
 }
 
-#sponsor {
-    width: 6em;
-}
-
 nav {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-#logo {
-    padding-top: 30px;
-    padding-left: 40px;
+#sponsor {
+    padding: 10px 10px 0;
 }
 
 #logo img {
     width: 60px;
+}
+
+#sponsor {
+    width: 6em;
 }
 
 #locomotive-blur {
